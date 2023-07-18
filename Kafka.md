@@ -8,9 +8,9 @@
 
 目前企业中比较常见的消息队列产品主要有Kafka、ActiveMQ、RabbitMQ、RocketMQ等。在大数据场景主要采用Kafka作为消息队列。在JavaEE开发中主要采用AcitveMQ、RabbitMQ、RocketMQ。传统的消息队列的主要应用场景包括：**缓存/削峰、解耦、异步通信**。
 
-![image-20230717195641159](/Users/jiang/Library/Application Support/typora-user-images/image-20230717195641159.png)
+![image-20230717195641159](/Users/jiang/Desktop/Workspace/笔记文档/Kafka.assets/image-20230717195641159.png)
 
-![image-20230717195252393](/Users/jiang/Library/Application Support/typora-user-images/image-20230717195252393.png)
+![image-20230717195252393](/Users/jiang/Desktop/Workspace/笔记文档/Kafka.assets/image-20230717195252393.png)
 
 ![image-20230717195522616](/Users/jiang/Library/Application Support/typora-user-images/image-20230717195522616.png)
 
@@ -20,5 +20,4 @@
 
 **2）发布/订阅模式。 **（基本上都使用发布/订阅模式）
 
-![image-20230717195858987](/Users/jiang/Library/Application Support/typora-user-images/image-20230717195858987.png)
-
+![image-20230717195858987](/Users/jiang/Desktop/Workspace/笔记文档/Kafka.assets/image-20230717195858987.png)
