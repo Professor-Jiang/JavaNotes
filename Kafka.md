@@ -85,7 +85,7 @@ kafka安装，官网下载包，tar命令解压即可。
 
 ![image-20230724233534298](./assets/image-20230724233534298.png)
 
-![image-20230724234324208](/Users/liujiang/Desktop/workspace/resume/JavaNotes/assets/image-20230724234324208.png)
+![image-20230724234324208](./assets/image-20230724234324208.png)
 
 ## 4.1、自定义分区
 
