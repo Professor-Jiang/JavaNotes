@@ -128,17 +128,17 @@ kafka安装，官网下载包，tar命令解压即可。
 
 ## 4.3 生产者—数据可靠
 
-![image-20230726225407089](/Users/liujiang/Desktop/workspace/resume/JavaNotes/assets/image-20230726225407089.png)
+![image-20230726225407089](./assets/image-20230726225407089.png)
 
 ![image-20230726230716670](./assets/image-20230726230716670.png)
 
 ## 4.4 数据重复如何解决
 
-![image-20230726230938980](/Users/liujiang/Desktop/workspace/resume/JavaNotes/assets/image-20230726230938980.png)
+![image-20230726230938980](./assets/image-20230726230938980.png)
 
 ![image-20230726231651333](./assets/image-20230726231651333.png)
 
-![image-20230726231717747](/Users/liujiang/Desktop/workspace/resume/JavaNotes/assets/image-20230726231717747.png)
+![image-20230726231717747](./assets/image-20230726231717747.png)
 
 ![image-20230726232240102](./assets/image-20230726232240102.png)
 
@@ -146,7 +146,7 @@ kafka安装，官网下载包，tar命令解压即可。
 
 # 五、Borker原理
 
-![image-20230726233847244](/Users/liujiang/Desktop/workspace/resume/JavaNotes/assets/image-20230726233847244.png)
+![image-20230726233847244](./assets/image-20230726233847244.png)
 
 ## 5.1 KafKa Broker总体工作流程
 
