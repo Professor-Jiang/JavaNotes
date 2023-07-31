@@ -150,4 +150,34 @@ kafka安装，官网下载包，tar命令解压即可。
 
 ## 5.1 KafKa Broker总体工作流程
 
+![image-20230727230831983](./assets/image-20230727230831983.png)
+
+## 5.2 服役和退役（这部分上网查询下吧）
+
+1）准备一台服务器hadoop100
+
+2）对哪个主题操作
+
+3）形成计划
+
+4）执行计划
+
+5）验证计划
+
+## 5.3 kafka副本
+
+（1）副本的作用：提高数据可靠性
+
+（2）KafKa默认副本1个，生产环境一般配置为2个，保证数据可靠性，太多副本增加磁盘存储空间，增加网络上数据传输，降低效率。
+
+（3）KafKa中副本分为：Leader和Follower。KafKa生产者只会把数据发往Leader，然后Follower找Leader进行同步数据。
+
+（4）KafKa分区中所有副本统称为AR（Assigned Repllicas）。AR = ISR + OSR
+
+**ISR：**表示和Leader保持同步的Follower集合。如果Follower长时间未向Leader发送通信请求或同步数据，则该Follewer将被踢出ISR。该时间阈值由**replica.lag.time.max.ms**参数设定，默认30s。Leader发生故障后，就会从ISR中选举新的Leader。
+
+**OSR：**白噢是Follower与Leader副本同步时，延迟过多的副本。
+
+意思就是所有副本都在AR里，ISR中副本正常，OSR中副本不正常。
+
 # 六、消费者原理
