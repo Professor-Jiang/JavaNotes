@@ -81,6 +81,15 @@ kafka安装，官网下载包，tar命令解压即可。
 
 # 四、KafKa生产者原理
 
+<<<<<<< HEAD
+![image-20230723234326611](/Users/jiang/Desktop/Workspace/笔记文档/Kafka.assets/image-20230723234326611.png)
+
+
+
+测试一下 version2.0
+复现pull代码的错误
+
+=======
 ![image-20230723234326611](./Kafka.assets/image-20230723234326611.png)
 
 ![image-20230724233534298](./assets/image-20230724233534298.png)
@@ -181,3 +190,4 @@ kafka安装，官网下载包，tar命令解压即可。
 意思就是所有副本都在AR里，ISR中副本正常，OSR中副本不正常。
 
 # 六、消费者原理
+>>>>>>> ce09c42d3c713ee5c1d88bdfe2d7d8efbce2daeb
