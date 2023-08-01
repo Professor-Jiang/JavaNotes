@@ -1,6 +1,6 @@
 # 一、Kafka定义
 
-![image-20230723214958616](/Users/jiang/Desktop/Workspace/笔记文档/Kafka.assets/image-20230723214958616.png)
+![image-20230723214958616](./Kafka.assets/image-20230723214958616.png)
 
 **Kafka传统定义**：Kafka是一个**分布式**的基于**发布/订阅模式**的**消息队列**，主要用于大数据实时处理领域。
 
@@ -10,11 +10,11 @@
 
 目前企业中比较常见的消息队列产品主要有Kafka、ActiveMQ、RabbitMQ、RocketMQ等。在大数据场景主要采用Kafka作为消息队列。在JavaEE开发中主要采用AcitveMQ、RabbitMQ、RocketMQ。传统的消息队列的主要应用场景包括：**缓存/削峰、解耦、异步通信**。
 
-![image-20230717195641159](/Users/jiang/Desktop/Workspace/笔记文档/Kafka.assets/image-20230717195641159.png)
+![image-20230717195641159](./Kafka.assets/image-20230717195641159.png)
 
-![image-20230717195252393](/Users/jiang/Desktop/Workspace/笔记文档/Kafka.assets/image-20230717195252393.png)
+![image-20230717195252393](./Kafka.assets/image-20230717195252393.png)
 
-![image-20230717195522616](/Users/jiang/Library/Application Support/typora-user-images/image-20230717195522616.png)
+![image-20230717195252393](./Kafka.assets/image-20230717195522616.png)
 
 ## 1.1 消息队列的两种模式
 
@@ -22,11 +22,11 @@
 
 **2）发布/订阅模式。 **（基本上都使用发布/订阅模式）
 
-![image-20230723220302963](/Users/jiang/Desktop/Workspace/笔记文档/Kafka.assets/image-20230723220302963.png)
+![image-20230723220302963](./Kafka.assets/image-20230723220302963.png)
 
 ## 1.2 KafKa结构
 
-![image-20230723221121062](/Users/jiang/Desktop/Workspace/笔记文档/Kafka.assets/image-20230723221121062.png)
+![image-20230723221121062](./Kafka.assets/image-20230723221121062.png)
 
 # 二、KafKa安装
 
@@ -35,50 +35,149 @@ tar -zxvf <tar包名> -C <目录名>
 # -z：压缩和解压缩 ".tar.gz" 格式；
 ```
 
-![image-20230723222227180](/Users/jiang/Desktop/Workspace/笔记文档/Kafka.assets/image-20230723222227180.png)
+![image-20230723222227180](./Kafka.assets/image-20230723222227180.png)
 
-![image-20230723222422037](/Users/jiang/Desktop/Workspace/笔记文档/Kafka.assets/image-20230723222422037.png)
+![image-20230723222422037](./Kafka.assets/image-20230723222422037.png)
 
-![image-20230723222508820](/Users/jiang/Desktop/Workspace/笔记文档/Kafka.assets/image-20230723222508820.png)
+![image-20230723222508820](./Kafka.assets/image-20230723222508820.png)
 
-![image-20230723222332001](/Users/jiang/Desktop/Workspace/笔记文档/Kafka.assets/image-20230723222332001.png)
+![image-20230723222332001](./Kafka.assets/image-20230723222332001.png)
 
 kafka安装，官网下载包，tar命令解压即可。
 
 # 三、KafKa使用
 
-![image-20230723230930590](/Users/jiang/Desktop/Workspace/笔记文档/Kafka.assets/image-20230723230930590.png)
+![image-20230723230930590](./Kafka.assets/image-20230723230930590.png)
 
 创建名为`first`的主题，分区数量为`1`，分区副本为`3	`。
 
-![image-20230723231357014](/Users/jiang/Desktop/Workspace/笔记文档/Kafka.assets/image-20230723231357014.png)
+![image-20230723231357014](./Kafka.assets/image-20230723231357014.png)
 
 查看主题的详情信息，发现当前的分区为0，有三个分区副本，分别在三台机器上`2，0，1`。Leader为`2`，说明Hadoop104机器上的分区是工作分区，当前机器和Hadoop上的分区都是作为follower的，是不工作的。【只有leader的分区是工作的】
 
-![image-20230723231459250](/Users/jiang/Desktop/Workspace/笔记文档/Kafka.assets/image-20230723231459250.png)
+![image-20230723231459250](./Kafka.assets/image-20230723231459250.png)
 
-![image-20230723231641119](/Users/jiang/Desktop/Workspace/笔记文档/Kafka.assets/image-20230723231641119.png)
+![image-20230723231641119](./Kafka.assets/image-20230723231641119.png)
 
 接下来，修改分区数量为`3`，【注意：分区数量只能增加，不能减少】。
 
-![image-20230723232101985](/Users/jiang/Desktop/Workspace/笔记文档/Kafka.assets/image-20230723232101985.png)
+![image-20230723232101985](./Kafka.assets/image-20230723232101985.png)
 
 创建生产者，向topic中传递数据。创建消费者，查看数据是否被传递到topic中。
 
-![image-20230723232500930](/Users/jiang/Desktop/Workspace/笔记文档/Kafka.assets/image-20230723232500930.png)
+![image-20230723232500930](./Kafka.assets/image-20230723232500930.png)
 
-![image-20230723232727602](/Users/jiang/Desktop/Workspace/笔记文档/Kafka.assets/image-20230723232727602.png)
+![image-20230723232727602](./Kafka.assets/image-20230723232727602.png)
 
 发现读不到数据，因为需要先订阅后发布。那么现在再生产一条消息。
 
-![image-20230723232835633](/Users/jiang/Desktop/Workspace/笔记文档/Kafka.assets/image-20230723232835633.png)
+![image-20230723232835633](./Kafka.assets/image-20230723232835633.png)
 
-![image-20230723232902418](/Users/jiang/Desktop/Workspace/笔记文档/Kafka.assets/image-20230723232902418.png)
+![image-20230723232902418](./Kafka.assets/image-20230723232902418.png)
 
 可以发现，现在可以收到消息了。那么之前的消息能不能获取到呢。加上一个参数即可。`--from-beginning`，现在历史消息也可以读取到了。
 
-![image-20230723233047620](/Users/jiang/Desktop/Workspace/笔记文档/Kafka.assets/image-20230723233047620.png)
+![image-20230723233047620](./Kafka.assets/image-20230723233047620.png)
 
 # 四、KafKa生产者原理
 
-![image-20230723234326611](/Users/jiang/Desktop/Workspace/笔记文档/Kafka.assets/image-20230723234326611.png)
+![image-20230723234326611](./Kafka.assets/image-20230723234326611.png)
+
+![image-20230724233534298](./assets/image-20230724233534298.png)
+
+![image-20230724234324208](./assets/image-20230724234324208.png)
+
+## 4.1、自定义分区
+
+研发人员可以根据企业需求，自己重新实现分区器。
+
+1）需求
+
+  例如我们需要实现一个分区器，发送过来的数据中如果包含atguigu，就发送至0号分区，不包含atguigu，就发送至1号分区。
+
+2）实现步骤
+
+（1）定义类实现Partitioner接口
+
+（2）重写partition()方法
+
+![image-20230726222813860](./assets/image-20230726222813860.png)
+
+![image-20230726223001311](./assets/image-20230726223001311.png)
+
+![image-20230726223219846](./assets/image-20230726223219846.png)
+
+![image-20230726223250608](./assets/image-20230726223250608.png)
+
+自定义分区器一般用于过滤脏数据。
+
+![image-20230726223821060](./assets/image-20230726223821060.png)
+
+如果linger.ms改得比较大，那么数据的延迟就会比较高。
+
+## 4.2 KafKa使用步骤
+
+> 0. 创建配置properties并设置相应参数
+> 1. 创建Kafka生产者，前述配置作为生产者的参数
+> 2. 发送数据，此时需要指定主题
+> 3. 关闭资源
+
+![image-20230726224502115](./assets/image-20230726224502115.png)
+
+![image-20230726224608428](./assets/image-20230726224608428.png)
+
+## 4.3 生产者—数据可靠
+
+![image-20230726225407089](./assets/image-20230726225407089.png)
+
+![image-20230726230716670](./assets/image-20230726230716670.png)
+
+## 4.4 数据重复如何解决
+
+![image-20230726230938980](./assets/image-20230726230938980.png)
+
+![image-20230726231651333](./assets/image-20230726231651333.png)
+
+![image-20230726231717747](./assets/image-20230726231717747.png)
+
+![image-20230726232240102](./assets/image-20230726232240102.png)
+
+![image-20230726233104014](./assets/image-20230726233104014.png)
+
+# 五、Borker原理
+
+![image-20230726233847244](./assets/image-20230726233847244.png)
+
+## 5.1 KafKa Broker总体工作流程
+
+![image-20230727230831983](./assets/image-20230727230831983.png)
+
+## 5.2 服役和退役（这部分上网查询下吧）
+
+1）准备一台服务器hadoop100
+
+2）对哪个主题操作
+
+3）形成计划
+
+4）执行计划
+
+5）验证计划
+
+## 5.3 kafka副本
+
+（1）副本的作用：提高数据可靠性
+
+（2）KafKa默认副本1个，生产环境一般配置为2个，保证数据可靠性，太多副本增加磁盘存储空间，增加网络上数据传输，降低效率。
+
+（3）KafKa中副本分为：Leader和Follower。KafKa生产者只会把数据发往Leader，然后Follower找Leader进行同步数据。
+
+（4）KafKa分区中所有副本统称为AR（Assigned Repllicas）。AR = ISR + OSR
+
+**ISR：**表示和Leader保持同步的Follower集合。如果Follower长时间未向Leader发送通信请求或同步数据，则该Follewer将被踢出ISR。该时间阈值由**replica.lag.time.max.ms**参数设定，默认30s。Leader发生故障后，就会从ISR中选举新的Leader。
+
+**OSR：**白噢是Follower与Leader副本同步时，延迟过多的副本。
+
+意思就是所有副本都在AR里，ISR中副本正常，OSR中副本不正常。
+
+# 六、消费者原理
