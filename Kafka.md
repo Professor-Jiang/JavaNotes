@@ -80,6 +80,10 @@ kafka安装，官网下载包，tar命令解压即可。
 ![image-20230723233047620](./Kafka.assets/image-20230723233047620.png)
 
 # 四、KafKa生产者原理
+![image-20230723234326611](./Kafka.assets/image-20230723234326611.png)
+
+测试一下 version2.0
+复现pull代码的错误
 
 ![image-20230723234326611](./Kafka.assets/image-20230723234326611.png)
 
