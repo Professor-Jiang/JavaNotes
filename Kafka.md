@@ -87,9 +87,9 @@ kafka安装，官网下载包，tar命令解压即可。
 
 ![image-20230723234326611](./Kafka.assets/image-20230723234326611.png)
 
-![image-20230724233534298](./assets/image-20230724233534298.png)
+![image-20230724233534298](Kafka.assets/image-20230724233534298.png)
 
-![image-20230724234324208](./assets/image-20230724234324208.png)
+![image-20230724234324208](Kafka.assets/image-20230724234324208.png)
 
 ## 4.1、自定义分区
 
@@ -105,17 +105,17 @@ kafka安装，官网下载包，tar命令解压即可。
 
 （2）重写partition()方法
 
-![image-20230726222813860](./assets/image-20230726222813860.png)
+![image-20230726222813860](Kafka.assets/image-20230726222813860.png)
 
-![image-20230726223001311](./assets/image-20230726223001311.png)
+![image-20230726223001311](Kafka.assets/image-20230726223001311.png)
 
-![image-20230726223219846](./assets/image-20230726223219846.png)
+![image-20230726223219846](Kafka.assets/image-20230726223219846.png)
 
-![image-20230726223250608](./assets/image-20230726223250608.png)
+![image-20230726223250608](Kafka.assets/image-20230726223250608.png)
 
 自定义分区器一般用于过滤脏数据。
 
-![image-20230726223821060](./assets/image-20230726223821060.png)
+![image-20230726223821060](Kafka.assets/image-20230726223821060.png)
 
 如果linger.ms改得比较大，那么数据的延迟就会比较高。
 
@@ -126,35 +126,35 @@ kafka安装，官网下载包，tar命令解压即可。
 > 2. 发送数据，此时需要指定主题
 > 3. 关闭资源
 
-![image-20230726224502115](./assets/image-20230726224502115.png)
+![image-20230726224502115](Kafka.assets/image-20230726224502115.png)
 
-![image-20230726224608428](./assets/image-20230726224608428.png)
+![image-20230726224608428](Kafka.assets/image-20230726224608428.png)
 
 ## 4.3 生产者—数据可靠
 
-![image-20230726225407089](./assets/image-20230726225407089.png)
+![image-20230726225407089](Kafka.assets/image-20230726225407089.png)
 
-![image-20230726230716670](./assets/image-20230726230716670.png)
+![image-20230726230716670](Kafka.assets/image-20230726230716670.png)
 
 ## 4.4 数据重复如何解决
 
-![image-20230726230938980](./assets/image-20230726230938980.png)
+![image-20230726230938980](Kafka.assets/image-20230726230938980.png)
 
-![image-20230726231651333](./assets/image-20230726231651333.png)
+![image-20230726231651333](Kafka.assets/image-20230726231651333.png)
 
-![image-20230726231717747](./assets/image-20230726231717747.png)
+![image-20230726231717747](Kafka.assets/image-20230726231717747.png)
 
-![image-20230726232240102](./assets/image-20230726232240102.png)
+![image-20230726232240102](Kafka.assets/image-20230726232240102.png)
 
-![image-20230726233104014](./assets/image-20230726233104014.png)
+![image-20230726233104014](Kafka.assets/image-20230726233104014.png)
 
 # 五、Borker原理
 
-![image-20230726233847244](./assets/image-20230726233847244.png)
+![image-20230726233847244](Kafka.assets/image-20230726233847244.png)
 
 ## 5.1 KafKa Broker总体工作流程
 
-![image-20230727230831983](./assets/image-20230727230831983.png)
+![image-20230727230831983](Kafka.assets/image-20230727230831983.png)
 
 ## 5.2 服役和退役（这部分上网查询下吧）
 
@@ -184,6 +184,93 @@ kafka安装，官网下载包，tar命令解压即可。
 
 意思就是所有副本都在AR里，ISR中副本正常，OSR中副本不正常。
 
+## 5.4 Leader和Follower故障处理细节
+
+![image-20230807234137484](Kafka.assets/image-20230807234137484.png)
+
+![image-20230807234032463](Kafka.assets/image-20230807234032463.png)
+
+## 5.5 分区副本匹配（16个分区，三个副本）
+
+![image-20230807234832802](Kafka.assets/image-20230807234832802.png)
+
+## 5.6 手动调整分区副本
+
+![image-20230807235033922](Kafka.assets/image-20230807235033922.png)
+
+![image-20230807235253171](Kafka.assets/image-20230807235253171.png)
+
+![image-20230807235330047](Kafka.assets/image-20230807235330047.png)
+
+![image-20230807235457769](Kafka.assets/image-20230807235457769.png)
+
+## 5.7 Leader Partition负载平衡
+
+## 5.8 增加副本因子
+
+![image-20230808000354336](Kafka.assets/image-20230808000354336.png)
+
+## 5.9 文件存储机制
+
+![image-20230808232914021](Kafka.assets/image-20230808232914021.png)
+
+
+
+![image-20230808233233579](Kafka.assets/image-20230808233233579.png)
+
+![image-20230808233744259](Kafka.assets/image-20230808233744259.png)
+
+![image-20230808234334566](Kafka.assets/image-20230808234334566.png)
+
+## 5.10 文件清理策略
+
+![image-20230808234629204](Kafka.assets/image-20230808234629204.png)
+
+![image-20230808234859839](Kafka.assets/image-20230808234859839.png)
+
+![image-20230808235118886](Kafka.assets/image-20230808235118886.png)
+
+![image-20230808235251964](Kafka.assets/image-20230808235251964.png)
+
+## 5.11 高效读取数据
+
+![image-20230808235543545](Kafka.assets/image-20230808235543545.png)
+
+
+
+![image-20230808235933664](Kafka.assets/image-20230808235933664.png)
+
+
+
 # 六、消费者原理
 
-《其他》文件修改了
+## 6.1 消费者消费方式
+
+![image-20230809000356023](Kafka.assets/image-20230809000356023.png)
+
+## 6.2 消费者总体工作流程
+
+![image-20230809000802847](Kafka.assets/image-20230809000802847.png)
+
+## 6.3 消费者组
+
+- Consumer Group（CG）：消费者组，由多个consumer组成，形成一个消费者组的条件是所有消费者的groupid相同。
+
+- 消费者组内每个消费者负责消费不同分区的数据，一个分区只能由一个组内消费者消费。
+
+- 消费者组只爱你互不影响。所有消费者都属于某个消费者组，即消费者组是逻辑上的一个订阅者。
+
+  【视频中说这样设计的目的是为了后续去重的问题，不理解！！！】
+
+  ![image-20230809222530226](Kafka.assets/image-20230809222530226.png)
+
+![image-20230809223055964](Kafka.assets/image-20230809223055964.png)
+
+![image-20230809223638187](Kafka.assets/image-20230809223638187.png)
+
+
+
+
+
+
+
