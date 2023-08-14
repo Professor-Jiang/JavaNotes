@@ -254,7 +254,7 @@ kafka安装，官网下载包，tar命令解压即可。
 
 ## 6.3 消费者组
 
-- Consumer Group（CG）：消费者组，由多个consumer组成，形成一个消费者组的条件是所有消费者的groupid相同。
+- Consumer Group（CG）：消费者组，由多个consumer组成，形成一个消费者组的条件是所有**消费者的groupid相同**。
 
 - 消费者组内每个消费者负责消费不同分区的数据，一个分区只能由一个组内消费者消费。
 
@@ -268,9 +268,44 @@ kafka安装，官网下载包，tar命令解压即可。
 
 ![image-20230809223638187](Kafka.assets/image-20230809223638187.png)
 
+## 6.4 分区的分配以及再平衡
 
+四种分区分配策略
 
+![image-20230810223929009](Kafka.assets/image-20230810223929009.png)
 
+![image-20230810224314734](Kafka.assets/image-20230810224314734.png)
 
+![image-20230810230107616](Kafka.assets/image-20230810230107616.png)
 
+> 消费者的offset维护在哪里？
+>
+> 答：在Kafka0.9版本之前，维护在Zookeeper中，在0.9版本之后维护在系统主题当中。
 
+## 6.5 offset的默认维护位置
+
+![image-20230813220331687](Kafka.assets/image-20230813220331687.png)
+
+![image-20230813215755653](Kafka.assets/image-20230813215755653.png)
+
+## 6.6 自动提交offset
+
+![image-20230813220559808](Kafka.assets/image-20230813220559808.png)
+
+## 6.7 手动提交offset
+
+![image-20230813221043636](Kafka.assets/image-20230813221043636.png)
+
+## 6.8 指定offset消费
+
+![image-20230813221358084](Kafka.assets/image-20230813221358084.png)
+
+## 6.9 漏消费和重复消费
+
+![image-20230813223011793](Kafka.assets/image-20230813223011793.png)
+
+![image-20230813223237050](Kafka.assets/image-20230813223237050.png)
+
+## 6.10 消费事物
+
+![image-20230813223322817](Kafka.assets/image-20230813223322817.png)
