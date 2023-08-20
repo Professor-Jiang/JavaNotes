@@ -400,7 +400,7 @@ kafka安装，官网下载包，tar命令解压即可。
 
 ![image-20230815231329774](Kafka.assets/image-20230815231329774.png)
 
-## 九、Kafka集成外部环境
+# 九、Kafka集成外部环境
 
 ## 9.1 集成Flume
 
@@ -414,8 +414,122 @@ Flume作为消费者，从集群拉取数据。
 
 ![image-20230815234428804](Kafka.assets/image-20230815234428804.png)
 
-## 9.2 集成Spark
+## 9.2 集成Flink
 
-## 9.3 集成Flink
+Flink分别作为生产者和消费者（终端开一个消费者或者生产者）。
 
-## 9.4 集成SpringBoot
+## ![image-20230816230536837](Kafka.assets/image-20230816230536837.png)
+
+![image-20230816230551166](Kafka.assets/image-20230816230551166.png)
+
+![image-20230816230611258](Kafka.assets/image-20230816230611258.png)
+
+![image-20230816231021847](Kafka.assets/image-20230816231021847.png)
+
+## 9.3 集成SpringBoot
+
+SpringBoot作为生产者发送数据给集群。
+
+![image-20230816231804664](Kafka.assets/image-20230816231804664.png)
+
+![image-20230816231534515](Kafka.assets/image-20230816231534515.png)
+
+SpringBoot作为消费者，接收Kafka生产者的消息传递。
+
+![image-20230816232052785](Kafka.assets/image-20230816232052785.png)
+
+![image-20230816232120243](Kafka.assets/image-20230816232120243.png)
+
+## 9.4 集成Spark
+
+Spark是一个在大数据开发中非常常用的组件，可以用于Kafka的生产者，也可以用于消费者。
+
+![image-20230816232302868](Kafka.assets/image-20230816232302868.png)
+
+![image-20230816235246518](Kafka.assets/image-20230816235246518.png)
+
+![image-20230816235759569](Kafka.assets/image-20230816235759569.png)
+
+# 十、Kafka调优
+
+## 10.1 Kafka硬件配置选择
+
+场景：100万日活，每人每天产生日志100条左右，则每天产生1亿条日志。【中小型公司】
+
+处理日志速度   1亿/（24*3600） = 1150条/秒
+
+一条日志的大小一般是1k，那么每秒差不多就是1M的日志，我们考虑峰值，一般是平均值的20倍，则每秒20兆日志，每秒需要处理2万条日志。
+
+![image-20230817222337105](Kafka.assets/image-20230817222337105.png) 
+
+![image-20230817222630931](Kafka.assets/image-20230817222630931.png)
+
+![image-20230817223150515](Kafka.assets/image-20230817223150515.png)
+
+![image-20230817223354985](Kafka.assets/image-20230817223354985.png)
+
+![image-20230817223520610](Kafka.assets/image-20230817223520610.png)
+
+## 10.2 Kafka生产者调优
+
+![image-20230817224008964](Kafka.assets/image-20230817224008964.png)
+
+生产者有很多可配置的参数，自己查阅官网。
+
+## 10.3 Kafka Borker调优
+
+![image-20230817224720965](Kafka.assets/image-20230817224720965.png)
+
+## 10.4 kafka 消费者调优
+
+![image-20230817225424119](Kafka.assets/image-20230817225424119.png)
+
+![image-20230817225544594](Kafka.assets/image-20230817225544594.png)
+
+调优都是调整Kafka的参数。
+
+## 10.4 kafka 整体调优
+
+![image-20230817230004262](Kafka.assets/image-20230817230004262.png)
+
+![image-20230817230133078](Kafka.assets/image-20230817230133078.png)
+
+![image-20230817230234451](Kafka.assets/image-20230817230234451.png)
+
+![image-20230817230336512](Kafka.assets/image-20230817230336512.png)
+
+![image-20230817230618348](Kafka.assets/image-20230817230618348.png)
+
+## 10.5 Producer压力测试
+
+以下数据和压力测试场景有关，不绝对，要考虑实际的业务场景，调整相应参数，理论上这些参数的调整都可以优化吞吐量的。
+
+![image-20230818234409838](Kafka.assets/image-20230818234409838.png)
+
+## 10.6 Consumer压力测试
+
+![image-20230818235128500](Kafka.assets/image-20230818235128500.png)
+
+# 十一、Kafka源码
+
+## 11.1 生产者源码
+
+![image-20230819000906501](Kafka.assets/image-20230819000906501.png)
+
+源码官网可以下载，客户端是java写的，服务器端是scala写的。
+
+![image-20230819001703271](Kafka.assets/image-20230819001703271.png)
+
+![image-20230819003042963](Kafka.assets/image-20230819003042963.png)
+
+![image-20230819003115486](Kafka.assets/image-20230819003115486.png)
+
+## 11.2 消费者源码
+
+![image-20230820185211634](Kafka.assets/image-20230820185211634.png)
+
+![image-20230820185427082](Kafka.assets/image-20230820185427082.png)
+
+## 11.3 borker源码
+
+![image-20230820192639422](Kafka.assets/image-20230820192639422.png)
