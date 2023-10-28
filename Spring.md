@@ -111,14 +111,364 @@ session    在一个会话范围内有效
   bean的后置处理器会在生命周期的初始化前后添加额外的操作，需要实现BeanPostProcessor接口，且配置到IOC容器中，需要注意的是，bean后置处理器不是单独针对某一bean生效，而是针对IOC中所有bean都会执行。
   ```
 
-
 # SpringBoot
 
+> **带着疑问阅读代码**
+>
+> 1.starter是什么？我们如何去使用这些starter？
+>
+> 2.为什么包扫描只会扫描核心启动类所在的包以及子包？
+>
+> 3.在SpringBoot启动的过程中，是如何完成自动装配的？
+>
+> 4.内嵌Tomcat是如何被创建以及启动的？
+>
+> 5.使用了web场景对应的starter，Spring MVC是如何自动装配的？
+
 ## 一、源码阅读
+
+SpringBoot中核心注解：
+
+```java
+@SpringBootConfiguration  //声明主配置类
+@EnableAutoConfiguration   //自动装配，核心中的核心
+@CompomentScan  //包扫描
+```
+
+`Spring`中有很多以`Enable`开头的注解，其作用就是借助`@Import`来收集并注册特定场景的相关的`Bean`，并加载到`IOC`容器。
+
+![image-20230919000035558](Spring.assets/image-20230919000035558.png)
+
+![image-20230919000111918](Spring.assets/image-20230919000111918.png)
+
+![image-20230919000155230](Spring.assets/image-20230919000155230.png)
+
+![image-20230919000341692](Spring.assets/image-20230919000341692.png)
+
+![image-20230919000553482](Spring.assets/image-20230919000553482.png)
+
+![image-20230919000721400](Spring.assets/image-20230919000721400.png)
+
+![image-20230919001626648](Spring.assets/image-20230919001626648.png)
+
+![image-20230921084724754](Spring.assets/image-20230921084724754.png)
+
+
+
+
+
+
+
+
 
 
 
 # SpringCloud
+
+## 一、项目创建
+
+定义一个springboot项目，名称为`springBootAlibaba`，在pom文件中设置打包方式为
+
+```xml
+<packaging>pom</packaging>
+```
+
+因为我们是在`springBootAlibaba`项目下创建微服务，所以不直接在`springBootAlibaba`开发。在`springBootAlibaba`项目的`pom.xml`中添加如下依赖，以保证其下的子项目能继承这些依赖。
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-test</artifactId>
+        <scope>test</scope>
+    </dependency>
+</dependencies>
+```
+
+接下来创建`order`和`stock`子项目，这里可以使用创建maven的向导。构建好之后，手动添加如下所示启动类。
+
+```java
+package com.liu.stock;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class StockApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(StockApplication.class, args);
+    }
+}
+```
+
+order中启动类稍微有些特殊，我们构建了以RestTemplate的Bean，并交由springboot容器管理。
+
+```java
+package com.liu.order;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.client.RestTemplate;
+
+@SpringBootApplication
+public class OrderApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(OrderApplication.class, args);
+    }
+
+    @Bean
+    public RestTemplate restTemplate(RestTemplateBuilder builder){
+        RestTemplate restTemplate = builder.build();
+        return restTemplate;
+    }
+}
+```
+
+创建RestTemplate的目的是为了实现服务之间（springboot的一种技术支持）的调用。
+
+接下来设置端口，order服务端口设置为8010，stock服务端口设置为8011。
+
+![image-20231017230043518](Spring.assets/image-20231017230043518.png)
+
+![image-20231017230130312](Spring.assets/image-20231017230130312.png)
+
+并且创建对应的controller示例，如下：
+
+```java
+package com.liu.order.controller;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+
+@RestController
+@RequestMapping("/order")
+public class OrderController {
+
+    //使用RestTemplate的方式来实现服务之间调用
+    @Autowired
+    RestTemplate restTemplate;
+
+    @RequestMapping("/add")
+    public String add(){
+        String templateForObject = restTemplate.getForObject("http://localhost:8011/stock/reduct", String.class);
+
+        return "订单微服务" + templateForObject;
+    }
+}
+```
+
+```java
+package com.liu.stock.controller;
+
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/stock")
+public class StockController {
+
+    @RequestMapping("/reduct")
+    public String reduct(){
+        return "库存微服务";
+    }
+}
+```
+
+现在我们可以在order服务中，通过RestTemplate向指定`ip+port+路径`发起请求，并且拿到返回的结果。
+
+![image-20231017230457193](Spring.assets/image-20231017230457193.png)
+
+可以看到两个服务之间是互通的。
+
+## 二、SpringCloud和SpringCloudAlibaba的引入
+
+`springBootCloudAlibaba`项目引入**SpringCloud**、**SpringCloudAlibaba**依赖，pom.xml文件改造如下。
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+    <modules>
+        <module>order</module>
+        <module>stock</module>
+    </modules>
+    <!-- 预留空间给自己公司项目的依赖版本管理    -->
+    <groupId>com.liu</groupId>
+    <artifactId>springBootCloudAlibaba</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>springBootCloudAlibaba</name>
+    <description>springBootCloudAlibaba</description>
+    <properties>
+        <java.version>1.8</java.version>
+        <springCloudALibaba.version>2.2.5.RELEASE</springCloudALibaba.version>
+        <springBoot.version>2.7.16</springBoot.version>
+        <springCloud.version>Hoxton.SR8</springCloud.version>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <!--   SpringCloudAlibaba 的版本管理，通过dependency完成继承 -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${springCloudALibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!--    springboot的版本管理        -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-parent</artifactId>
+                <version>${springBoot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- springCloud的版本管理 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${springCloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
+```
+
+## 三、微服务架构培训课
+
+**分布式事务**
+
+zookeepker+Dubbo
+
+SpringCloudAlibaba【包含nacos服务注册中心、】
+
+
+
+## 四、nacos介绍
+
+nacos是一个更易于构建云原生应用的动态服务发现、服务配置和服务管理的平台。
+
+集**注册中心+配置中心+服务管理**平台。
+
+### 1.注册中心演变及其设计思想
+
+首先服务注册比较直观的思路是维护一份注册表，表中存储ip，端口号，服务名称等信息。但是会存在一个问题：这种静态存储的思路对于服务的的扩容缩容问题难以解决，比如某个订单服务宕机了，如何去发现这个宕机呢？存储肯定是必要的，但不应该仅仅去存储，还应该做到发现和管理。
+
+历史上使用了nginx维护服务列表。但是nginx没有对服务进行监控和实时检查的功能。
+
+**1.**服务注册。
+
+**2.**调用服务时，获取服务。
+
+![image-20231028185446736](Spring.assets/image-20231028185446736.png)
+
+**引入心跳机制，定时拉去取服务列表，缓存到客户端：**
+
+![image-20231028185722155](Spring.assets/image-20231028185722155.png)
+
+每一个微服务都是nacos的客户端。
+
+### 2.核心功能
+
+**服务注册：**Nacos Client会通过发送REST请求的方式向Nacos Server注册自己的服务，提供自身的元数据，比如ip地址、端口等信息。Nacos Server接收到注册请求后，就回把这些元数据信息存储在一个双层的内存map中。
+
+**服务心跳：**在服务注册后，Nacos Client会维护一个定时心跳来持续通知Nacos Server，说明服务一直处于可用状态，防止被剔除，默认每5s发送一次心跳。
+
+**服务同步：**Nacos Server集群之间会互相同步服务实例，同来保证服务信息的一致性。 Leader   raft
+
+**服务发现：**服务消费者（Nacos Client）在调用服务提供者的服务时，会发送一个REST请求给Nacos Server，获取上面注册的服务清单，并且缓存在Nacos Client本地，同时在Nacos Client本地开启一个定时任务定时拉取服务端最新的注册表信息更新到本地缓存。
+
+**服务健康检查：**Nacos Server会开启一个定时任务用来检查注册服实例的健康情况，对于超过15s没有收到客户端心跳的实例会将它的healthy属性设置为false（客户端获取服务时，这个服务不会被发现）。如果某个实例超过30s没有收到心跳，直接剔除盖实例（被剔除的实例如果恢复，发送心跳则会重新注册）。
+
+### 3.主流的服务注册中心对比
+
+![image-20231028191908286](Spring.assets/image-20231028191908286.png)
+
+CAP               C一致性               A可用性           P分区容错性
+
+Nacos支持CP和AP的切换，默认是AP。
+
+### 4.Nacos Server部署
+
+github上下载安装，启动，默认启动时采用集群模式，需要在sh文件中修改为standalone单机模式。启动后可以访问本机的8848端口进入nacos页面。用户名：nacos，密码：nacos。
+
+![image-20231028193450394](Spring.assets/image-20231028193450394.png)
+
+![image-20231028193525144](Spring.assets/image-20231028193525144.png)
+
+现在自己开发的项目（订单服务和库存服务）需要添加nacos注册了。首先在子项目中添加好依赖。注意，之前我们在父项目中添加的是版本管理器，如果子项目需要用到nacos，还是需要引入依赖的，只不过不需要引入依赖本本了。
+
+![image-20231028193956667](Spring.assets/image-20231028193956667.png)
+
+接下来在yml配置文件中设置nacos的配置信息。
+
+![image-20231028194509191](Spring.assets/image-20231028194509191.png)
+
+![image-20231028194712094](Spring.assets/image-20231028194712094.png)
+
+点击详情之后的界面：
+
+![image-20231028194740162](Spring.assets/image-20231028194740162.png)
+
+现在服务之间的调用，就可以通过服务名称来进行。
+
+不过在调用的时候需要加上一个`@loadBalanced`注解来区别服务名称调用和ip地址调用。负载均衡器负责解析服务名称和ip地址的映射。
+
+![image-20231028195701946](Spring.assets/image-20231028195701946.png)
+
+![image-20231028195642858](Spring.assets/image-20231028195642858.png)
+
+现在我们再加上一个库存服务（即一个订单服务，两个库存服务），我们想验证负载均衡注解是否具备轮询服务的作用。
+
+![image-20231028195902166](Spring.assets/image-20231028195902166.png)
+
+![image-20231028195930048](Spring.assets/image-20231028195930048.png)
+
+![image-20231028195940523](Spring.assets/image-20231028195940523.png)
+
+
 
 # K8S
 
